@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intégration nouvel utilisateur — Latour &amp; Petit</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-/* ── Variables charte L&P ───────────────────────────────────────────────── */
+/* ── Variables charte L&P ───────────────────────────────────────── */
 :root {
   --lp-red:      #c8372d;
   --lp-red-dk:   #a82c23;
@@ -30,7 +32,7 @@
   --shadow-lg:   0 4px 20px rgba(0,0,0,.10);
 }
 
-/* ── Reset & base ───────────────────────────────────────────────────────── */
+/* ── Reset & base ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
@@ -41,28 +43,22 @@ body {
   min-height: 100vh;
 }
 
-/* ── En-tête ────────────────────────────────────────────────────────────── */
+/* ── En-tête ────────────────────────────────────────────────────── */
 .lp-header {
   background: var(--lp-white);
   border-bottom: 1px solid var(--lp-border);
   padding: 0 40px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: sticky; top: 0; z-index: 100;
   box-shadow: var(--shadow);
 }
 .lp-header-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 900px; margin: 0 auto;
+  height: 64px; display: flex;
+  align-items: center; justify-content: space-between;
 }
-.lp-logo-box { display: flex; align-items: center; gap: 0; text-decoration: none; flex-shrink: 0; }
+.lp-logo-box { display: flex; align-items: center; flex-shrink: 0; }
 .lp-logo-square {
-  width: 46px; height: 46px;
-  background: var(--lp-red);
+  width: 46px; height: 46px; background: var(--lp-red);
   display: flex; align-items: center; justify-content: center;
 }
 .lp-logo-text {
@@ -81,16 +77,14 @@ body {
 .lp-header-label { font-size: 12px; color: var(--lp-muted); text-align: right; }
 .lp-header-label strong { display: block; font-size: 13px; font-weight: 600; color: var(--lp-black); }
 
-/* ── Bandeau rouge ──────────────────────────────────────────────────────── */
+/* ── Bandeau rouge ──────────────────────────────────────────────── */
 .lp-eyebrow-bar { background: var(--lp-red); padding: 10px 40px; text-align: center; }
-.lp-eyebrow-bar p { font-size: 13px; font-weight: 600; color: var(--lp-white); letter-spacing: .3px; }
+.lp-eyebrow-bar p { font-size: 13px; font-weight: 600; color: var(--lp-white); }
 
-/* ── Hero ───────────────────────────────────────────────────────────────── */
+/* ── Hero ───────────────────────────────────────────────────────── */
 .lp-hero {
-  background: var(--lp-white);
-  padding: 52px 40px 56px;
-  border-bottom: 1px solid var(--lp-border);
-  text-align: center;
+  background: var(--lp-white); padding: 52px 40px 56px;
+  border-bottom: 1px solid var(--lp-border); text-align: center;
 }
 .lp-hero-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 3px;
@@ -102,59 +96,48 @@ body {
 }
 .lp-hero p { font-size: 14px; color: var(--lp-muted); max-width: 520px; margin: 0 auto; line-height: 1.75; }
 
-/* ── Conteneur principal ────────────────────────────────────────────────── */
+/* ── Conteneur ──────────────────────────────────────────────────── */
 .lp-main { max-width: 900px; margin: 36px auto 64px; padding: 0 32px; }
 
-/* ── Carte de section ───────────────────────────────────────────────────── */
+/* ── Carte ──────────────────────────────────────────────────────── */
 .lp-card {
-  background: var(--lp-white);
-  border: 1px solid var(--lp-border);
-  border-radius: var(--radius-lg);
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
+  background: var(--lp-white); border: 1px solid var(--lp-border);
+  border-radius: var(--radius-lg); margin-bottom: 20px; box-shadow: var(--shadow); overflow: hidden;
 }
 .lp-card-header {
-  padding: 14px 24px;
-  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px; display: flex; align-items: center; gap: 12px;
   border-bottom: 1px solid var(--lp-border);
 }
 .lp-card-num {
-  width: 26px; height: 26px;
-  background: var(--lp-red);
-  border-radius: var(--radius);
-  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; background: var(--lp-red);
+  border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700; color: var(--lp-white); flex-shrink: 0;
 }
 .lp-card-header h2 {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--lp-black);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lp-black);
 }
-/* Badge sécurité sur l'en-tête de carte */
-.lp-card-header .sec-badge {
-  margin-left: auto;
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--lp-ok); background: var(--lp-ok-bg);
-  border: 1px solid rgba(45,122,79,.25);
-  border-radius: 3px; padding: 2px 7px;
+.sec-badge {
+  margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--lp-ok); background: var(--lp-ok-bg);
+  border: 1px solid rgba(45,122,79,.25); border-radius: 3px; padding: 2px 7px;
   display: flex; align-items: center; gap: 4px;
 }
 .lp-card-body { padding: 28px 24px 24px; }
 
-/* ── Grille ─────────────────────────────────────────────────────────────── */
-.row { display: grid; gap: 16px; margin-bottom: 16px; }
+/* ── Grille ─────────────────────────────────────────────────────── */
+.row  { display: grid; gap: 16px; margin-bottom: 16px; }
 .row:last-child { margin-bottom: 0; }
 .cols2 { grid-template-columns: 1fr 1fr; }
 .cols3 { grid-template-columns: 1fr 1fr 1fr; }
 .col-span2 { grid-column: span 2; }
 
-/* ── Champ ──────────────────────────────────────────────────────────────── */
+/* ── Champ ──────────────────────────────────────────────────────── */
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase;
-  color: var(--lp-muted); display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--lp-muted);
+  display: flex; align-items: center; gap: 6px;
 }
 .badge-req {
   font-size: 9px; font-weight: 700; letter-spacing: .5px;
@@ -178,8 +161,7 @@ body {
 .field input::placeholder { color: #b8b8b8; }
 .field input:hover, .field select:hover { border-color: #b0b0b0; }
 .field input:focus, .field select:focus {
-  border-color: var(--lp-red);
-  box-shadow: 0 0 0 3px rgba(200,55,45,.12);
+  border-color: var(--lp-red); box-shadow: 0 0 0 3px rgba(200,55,45,.12);
 }
 .field select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23717171' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -193,10 +175,10 @@ body {
 .field .hint a { color: var(--lp-red); text-decoration: none; border-bottom: 1px solid rgba(200,55,45,.35); }
 .field .hint a:hover { border-color: var(--lp-red); }
 .err-msg { font-size: 11px; color: var(--lp-err); display: none; }
-.field.has-error .err-msg { display: block; }
-.field.has-error label { color: var(--lp-err); }
+.field.has-error .err-msg  { display: block; }
+.field.has-error label     { color: var(--lp-err); }
 
-/* ── Radio (statut) ─────────────────────────────────────────────────────── */
+/* ── Radio ──────────────────────────────────────────────────────── */
 .radio-group { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
 .radio-item {
   display: flex; align-items: center; gap: 10px; cursor: pointer;
@@ -207,13 +189,13 @@ body {
 .radio-item.selected { border-color: var(--lp-red); background: rgba(200,55,45,.04); }
 .radio-item input[type=radio] {
   accent-color: var(--lp-red); width: 16px; height: 16px;
-  cursor: pointer; flex-shrink: 0; margin: 0; padding: 0;
-  border: none; background: none; box-shadow: none;
+  cursor: pointer; flex-shrink: 0;
+  margin: 0; padding: 0; border: none; background: none; box-shadow: none;
 }
 .radio-item input[type=radio]:focus { box-shadow: none; }
 .radio-item span { font-size: 14px; color: var(--lp-dark); }
 
-/* ── Zone conditionnelle ────────────────────────────────────────────────── */
+/* ── Conditionnel ───────────────────────────────────────────────── */
 .conditional {
   display: none; margin-top: 14px; padding: 16px 18px;
   background: var(--lp-bg); border: 1px solid var(--lp-border);
@@ -225,7 +207,7 @@ body {
   text-transform: uppercase; color: var(--lp-red); margin-bottom: 12px;
 }
 
-/* ── Règles de validation ───────────────────────────────────────────────── */
+/* ── Règles de validation ───────────────────────────────────────── */
 .rules-box {
   margin-top: 10px; padding: 12px 14px;
   background: var(--lp-bg); border: 1px solid var(--lp-border);
@@ -246,24 +228,22 @@ body {
 .rules-box li.fail { color: var(--lp-err); }
 .rules-box li.fail::before { background: var(--lp-err); border-color: var(--lp-err); }
 
-/* Pilules mots passphrase */
+/* Pilules passphrase */
 .word-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
 .word-pills span {
   font-size: 11px; padding: 3px 9px; border-radius: var(--radius-pill);
-  border: 1px solid var(--lp-border); background: var(--lp-bg);
-  color: var(--lp-muted); transition: all .2s;
+  border: 1px solid var(--lp-border); background: var(--lp-bg); color: var(--lp-muted);
 }
 .word-pills span.ok  { background: var(--lp-ok-bg);  color: var(--lp-ok);  border-color: rgba(45,122,79,.3); }
 .word-pills span.bad { background: var(--lp-err-bg); color: var(--lp-err); border-color: rgba(192,57,43,.3); }
 
-/* ── Input alarme ───────────────────────────────────────────────────────── */
+/* ── Input alarme ───────────────────────────────────────────────── */
 #alarme {
   font-family: 'Courier New', monospace; font-size: 24px;
-  font-weight: 700; letter-spacing: 10px; width: 170px;
-  text-align: center; color: var(--lp-black);
+  font-weight: 700; letter-spacing: 10px; width: 170px; text-align: center;
 }
 
-/* ── Diviseur de section ────────────────────────────────────────────────── */
+/* ── Diviseur ───────────────────────────────────────────────────── */
 .section-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 16px; }
 .section-divider span {
   font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
@@ -272,43 +252,33 @@ body {
 .section-divider::before,
 .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--lp-border); }
 
-/* ── Boutons ────────────────────────────────────────────────────────────── */
-.btn-row {
-  display: flex; justify-content: flex-end;
-  align-items: center; gap: 12px; margin-top: 28px; flex-wrap: wrap;
-}
+/* ── Boutons ────────────────────────────────────────────────────── */
+.btn-row { display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
 .btn {
   font-family: var(--ff-sans); font-size: 12px; font-weight: 700;
-  letter-spacing: .5px; padding: 12px 28px; border-radius: var(--radius-pill);
-  cursor: pointer; border: 1.5px solid var(--lp-border);
-  background: var(--lp-white); color: var(--lp-muted); transition: all .2s;
+  padding: 12px 28px; border-radius: var(--radius-pill); cursor: pointer;
+  border: 1.5px solid var(--lp-border); background: var(--lp-white);
+  color: var(--lp-muted); transition: all .2s;
 }
 .btn:hover { border-color: var(--lp-red); color: var(--lp-red); }
 .btn-primary {
-  background: var(--lp-red); color: var(--lp-white);
-  border-color: var(--lp-red); box-shadow: 0 2px 8px rgba(200,55,45,.25);
+  background: var(--lp-red); color: var(--lp-white); border-color: var(--lp-red);
+  box-shadow: 0 2px 8px rgba(200,55,45,.25);
 }
-.btn-primary:hover {
-  background: var(--lp-red-dk); border-color: var(--lp-red-dk);
-  color: var(--lp-white); box-shadow: 0 4px 14px rgba(200,55,45,.3);
-}
-.btn-primary:disabled {
-  opacity: .6; cursor: not-allowed;
-  box-shadow: none;
-}
+.btn-primary:hover { background: var(--lp-red-dk); border-color: var(--lp-red-dk); color: var(--lp-white); }
+.btn-primary:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
 
-/* ── Spinner d'envoi ────────────────────────────────────────────────────── */
+/* Spinner */
 .spinner {
-  display: none; width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,.35);
-  border-top-color: #fff; border-radius: 50%;
-  animation: spin .7s linear infinite; flex-shrink: 0;
+  display: none; width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,.35); border-top-color: #fff;
+  border-radius: 50%; animation: spin .7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.btn-primary.loading { display: flex; align-items: center; gap: 8px; }
-.btn-primary.loading .spinner { display: inline-block; }
+.btn-loading { display: flex !important; align-items: center; gap: 8px; }
+.btn-loading .spinner { display: inline-block; }
 
-/* ── Écran de succès ────────────────────────────────────────────────────── */
+/* ── Écran de succès ────────────────────────────────────────────── */
 .success-wrap { display: none; padding: 48px 0 64px; align-items: center; justify-content: center; }
 .success-card {
   background: var(--lp-white); border: 1px solid var(--lp-border);
@@ -327,37 +297,35 @@ body {
 }
 .success-card p { font-size: 14px; color: var(--lp-muted); line-height: 1.7; }
 .success-tag {
-  display: inline-block; margin-top: 22px;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--lp-white);
+  display: inline-block; margin-top: 22px; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--lp-white);
   background: var(--lp-red); padding: 7px 20px; border-radius: var(--radius-pill);
 }
 
-/* ── Pied de page ───────────────────────────────────────────────────────── */
+/* ── Pied de page ───────────────────────────────────────────────── */
 .lp-footer { background: var(--lp-black); padding: 22px 40px; text-align: center; }
 .lp-footer p { font-size: 11px; color: rgba(255,255,255,.4); }
 .lp-footer span { color: var(--lp-red); margin: 0 6px; }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 620px) {
   .cols2, .cols3 { grid-template-columns: 1fr; }
   .col-span2 { grid-column: span 1; }
   .lp-hero h1 { font-size: 26px; }
-  .lp-main { padding: 0 16px; }
+  .lp-main, .lp-header { padding-left: 16px; padding-right: 16px; }
   .lp-card-body { padding: 20px 16px; }
-  .lp-header { padding: 0 16px; }
   .success-card { padding: 36px 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── En-tête ──────────────────────────────────────────────────────────────── -->
+<!-- ── En-tête ──────────────────────────────────────────────────────── -->
 <header class="lp-header">
   <div class="lp-header-inner">
     <div class="lp-logo-box">
       <div class="lp-logo-square">
-        <svg width="34" height="28" viewBox="0 0 34 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="34" height="28" viewBox="0 0 34 28" fill="none">
           <text x="1"  y="21" font-family="Georgia,serif" font-size="15" font-weight="700" fill="white">L</text>
           <text x="10" y="19" font-family="Georgia,serif" font-size="10" fill="rgba(255,255,255,.75)">&amp;</text>
           <text x="18" y="21" font-family="Georgia,serif" font-size="15" font-weight="700" fill="white">P</text>
@@ -375,28 +343,25 @@ body {
   </div>
 </header>
 
-<!-- ── Bandeau rouge ─────────────────────────────────────────────────────────── -->
+<!-- ── Bandeau rouge ─────────────────────────────────────────────────── -->
 <div class="lp-eyebrow-bar">
   <p>Merci de compléter ce formulaire avant votre entrée en fonction — vos données sont traitées de manière confidentielle.</p>
 </div>
 
-<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<!-- ── Hero ─────────────────────────────────────────────────────────── -->
 <div class="lp-hero">
   <div class="lp-hero-eyebrow">Latour &amp; Petit</div>
   <h1>Bienvenue dans notre équipe</h1>
   <p>Ce formulaire permet au service IT de préparer votre accès informatique, votre badge et vos outils de travail avant votre premier jour.</p>
 </div>
 
-<!-- ── Formulaire ────────────────────────────────────────────────────────────── -->
+<!-- ── Formulaire ────────────────────────────────────────────────────── -->
 <main class="lp-main">
 <div id="form-body">
 
   <!-- Section 1 : Identité -->
   <div class="lp-card">
-    <div class="lp-card-header">
-      <div class="lp-card-num">1</div>
-      <h2>Identité</h2>
-    </div>
+    <div class="lp-card-header"><div class="lp-card-num">1</div><h2>Identité</h2></div>
     <div class="lp-card-body">
       <div class="row cols2">
         <div class="field" id="f-nom">
@@ -459,10 +424,7 @@ body {
 
   <!-- Section 2 : Statut professionnel -->
   <div class="lp-card">
-    <div class="lp-card-header">
-      <div class="lp-card-num">2</div>
-      <h2>Statut professionnel</h2>
-    </div>
+    <div class="lp-card-header"><div class="lp-card-num">2</div><h2>Statut professionnel</h2></div>
     <div class="lp-card-body">
       <div class="field" id="f-statut">
         <label>Statut <span class="badge-req">requis</span></label>
@@ -504,10 +466,7 @@ body {
 
   <!-- Section 3 : Affectation -->
   <div class="lp-card">
-    <div class="lp-card-header">
-      <div class="lp-card-num">3</div>
-      <h2>Affectation chez L&amp;P</h2>
-    </div>
+    <div class="lp-card-header"><div class="lp-card-num">3</div><h2>Affectation chez L&amp;P</h2></div>
     <div class="lp-card-body">
       <div class="row cols2">
         <div class="field" id="f-bureau">
@@ -535,13 +494,16 @@ body {
     </div>
   </div>
 
-  <!-- Section 4 : Code alarme (chiffré AES-256) -->
+  <!-- Section 4 : Code alarme — chiffré AES-256 -->
   <div class="lp-card">
     <div class="lp-card-header">
       <div class="lp-card-num">4</div>
       <h2>Code alarme</h2>
       <span class="sec-badge">
-        <svg width="9" height="11" viewBox="0 0 9 11" fill="none"><rect x="1" y="4" width="7" height="7" rx="1" fill="#2d7a4f"/><path d="M2.5 4V3a2 2 0 114 0v1" stroke="#2d7a4f" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <svg width="9" height="11" viewBox="0 0 9 11" fill="none">
+          <rect x="1" y="4" width="7" height="7" rx="1" fill="#2d7a4f"/>
+          <path d="M2.5 4V3a2 2 0 114 0v1" stroke="#2d7a4f" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
         Chiffré AES-256
       </span>
     </div>
@@ -557,18 +519,21 @@ body {
             <li id="ar-consec">Aucune séquence consécutive de 3 (ex. 456 ou 654 interdit)</li>
           </ul>
         </div>
-        <span class="err-msg">⚠ Le code alarme ne respecte pas toutes les règles ci-dessus.</span>
+        <span class="err-msg">⚠ Le code alarme ne respecte pas toutes les règles.</span>
       </div>
     </div>
   </div>
 
-  <!-- Section 5 : Passphrase (chiffrée AES-256) -->
+  <!-- Section 5 : Passphrase — chiffrée AES-256 -->
   <div class="lp-card">
     <div class="lp-card-header">
       <div class="lp-card-num">5</div>
       <h2>Phrase de passe (passphrase)</h2>
       <span class="sec-badge">
-        <svg width="9" height="11" viewBox="0 0 9 11" fill="none"><rect x="1" y="4" width="7" height="7" rx="1" fill="#2d7a4f"/><path d="M2.5 4V3a2 2 0 114 0v1" stroke="#2d7a4f" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <svg width="9" height="11" viewBox="0 0 9 11" fill="none">
+          <rect x="1" y="4" width="7" height="7" rx="1" fill="#2d7a4f"/>
+          <path d="M2.5 4V3a2 2 0 114 0v1" stroke="#2d7a4f" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
         Chiffrée AES-256
       </span>
     </div>
@@ -590,7 +555,7 @@ body {
             <li id="pr-sep">Mots séparés par un caractère spécial</li>
           </ul>
         </div>
-        <span class="err-msg">⚠ La passphrase ne respecte pas toutes les règles ci-dessus.</span>
+        <span class="err-msg">⚠ La passphrase ne respecte pas toutes les règles.</span>
       </div>
     </div>
   </div>
@@ -599,7 +564,7 @@ body {
   <div class="btn-row">
     <button class="btn" onclick="resetForm()">Réinitialiser</button>
     <button class="btn btn-primary" id="btn-submit" onclick="submitForm()">
-      <span class="spinner"></span>
+      <span class="spinner" id="btn-spinner"></span>
       <span id="btn-label">Soumettre le formulaire</span>
     </button>
   </div>
@@ -622,27 +587,37 @@ body {
 
 </main>
 
-<!-- Pied de page -->
 <footer class="lp-footer">
   <p>© 2025 Latour &amp; Petit SA/NV <span>·</span> Service informatique interne <span>·</span> Document confidentiel</p>
 </footer>
 
-<!-- ── Web Crypto API — chiffrement AES-256-GCM côté client ─────────────────── -->
+<!-- ══════════════════════════════════════════════════════════════════════
+     CONFIGURATION — À remplir avec tes valeurs EmailJS
+     ══════════════════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
 
-/* ════════════════════════════════════════════════════════════════════════════
-   CONFIGURATION
-   ════════════════════════════════════════════════════════════════════════════
-   ▸ FORMSPREE_ID  : remplacer par ton ID Formspree (ex. "xpwzgkld")
-     après inscription sur https://formspree.io
-   ▸ AES_KEY_HEX   : clé AES-256 générée — NE JAMAIS partager cette clé
-     La clé doit rester identique dans ce fichier ET dans le déchiffreur.
-   ════════════════════════════════════════════════════════════════════════════ */
-const FORMSPREE_ID = 'maqagvze';
-const AES_KEY_HEX  = 'e58b41152d5a2cd107033d3a23ac25f48c3e7dd6432f1f98f222ea21fca3347e';
+/* ┌─────────────────────────────────────────────────────────────────────┐
+   │  CONFIGURATION EMAILJS — remplacer les 3 valeurs ci-dessous        │
+   │  après création du compte sur https://emailjs.com                  │
+   └─────────────────────────────────────────────────────────────────────┘ */
+const EMAILJS_PUBLIC_KEY  = 'Ulk9zFvyDPMD_Hyk4';   // Account → API Keys
+const EMAILJS_SERVICE_ID  = 'service_1ztc86x';  // Email Services → Service ID
+const EMAILJS_TEMPLATE_ID = 'template_3r3nmpj'; // Email Templates → Template ID
 
-/* ── Conversion hex → ArrayBuffer ──────────────────────────────────────────── */
+/* ┌─────────────────────────────────────────────────────────────────────┐
+   │  CLÉ AES-256 — NE PAS MODIFIER — identique au déchiffreur          │
+   └─────────────────────────────────────────────────────────────────────┘ */
+const AES_KEY_HEX = 'e58b41152d5a2cd107033d3a23ac25f48c3e7dd6432f1f98f222ea21fca3347e';
+
+/* Initialisation EmailJS avec la Public Key */
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* ══════════════════════════════════════════════════════════════════════
+   CHIFFREMENT AES-256-GCM (Web Crypto API — natif dans tous navigateurs)
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Conversion hex → ArrayBuffer */
 function hexToBuffer(hex) {
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < bytes.length; i++) {
@@ -651,38 +626,28 @@ function hexToBuffer(hex) {
   return bytes.buffer;
 }
 
-/* ── Chiffrement AES-256-GCM ───────────────────────────────────────────────── */
+/* Chiffrement AES-256-GCM : retourne IV(12B) + ciphertext encodé Base64 */
 async function aesEncrypt(plaintext) {
-  /* Importation de la clé depuis le hex */
-  const keyMaterial = await crypto.subtle.importKey(
-    'raw',
-    hexToBuffer(AES_KEY_HEX),
-    { name: 'AES-GCM' },
-    false,           /* non extractable */
-    ['encrypt']
+  /* Import de la clé brute */
+  const key = await crypto.subtle.importKey(
+    'raw', hexToBuffer(AES_KEY_HEX),
+    { name: 'AES-GCM' }, false, ['encrypt']
   );
-
-  /* IV aléatoire de 12 octets (96 bits) — unique par chiffrement */
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-
-  /* Chiffrement du texte en UTF-8 */
+  /* IV aléatoire unique par chiffrement (12 octets = 96 bits) */
+  const iv        = crypto.getRandomValues(new Uint8Array(12));
   const encoded   = new TextEncoder().encode(plaintext);
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    keyMaterial,
-    encoded
-  );
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
 
-  /* Concaténation IV + ciphertext → encodage Base64 pour transport */
+  /* Concaténation IV + ciphertext → Base64 pour transport email */
   const combined = new Uint8Array(iv.byteLength + encrypted.byteLength);
   combined.set(iv, 0);
   combined.set(new Uint8Array(encrypted), iv.byteLength);
   return btoa(String.fromCharCode(...combined));
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    HELPERS VISUELS
-   ════════════════════════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════════════ */
 
 function clearErr(id) {
   const f  = document.getElementById('f-' + id);
@@ -704,13 +669,13 @@ function setOk(id) {
   if (el) el.classList.add('ok');
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    FORMATAGE AUTOMATIQUE
-   ════════════════════════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════════════ */
 
 /* NISS : formatage progressif AA.MM.JJ-XXX.CC */
 document.getElementById('niss').addEventListener('input', function () {
-  let v   = this.value.replace(/\D/g, '').substring(0, 11);
+  let v = this.value.replace(/\D/g, '').substring(0, 11);
   let out = '';
   if      (v.length > 9) out = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,6)+'-'+v.slice(6,9)+'.'+v.slice(9);
   else if (v.length > 6) out = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,6)+'-'+v.slice(6);
@@ -724,12 +689,12 @@ document.getElementById('niss').addEventListener('input', function () {
 function validateNISS() {
   const digits = document.getElementById('niss').value.replace(/\D/g, '');
   if (digits.length === 11) { setOk('niss'); return true; }
-  if (digits.length > 0)      setErr('niss');
-  else                        clearErr('niss');
+  if (digits.length > 0)    setErr('niss');
+  else                      clearErr('niss');
   return false;
 }
 
-/* N° entreprise : formatage BE XXXX.XXX.XXX à la perte du focus */
+/* N° entreprise : BE XXXX.XXX.XXX à la perte du focus */
 document.getElementById('nentreprise').addEventListener('blur', function () {
   const raw = this.value.replace(/[^\d]/g, '');
   if (raw.length === 10) {
@@ -740,9 +705,9 @@ document.getElementById('nentreprise').addEventListener('blur', function () {
   }
 });
 
-/* ════════════════════════════════════════════════════════════════════════════
-   STATUT : affichage conditionnel du maître de stage
-   ════════════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   STATUT : affichage conditionnel maître de stage
+   ══════════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('input[name=statut]').forEach(r => {
   r.addEventListener('change', function () {
     document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
@@ -754,27 +719,23 @@ document.querySelectorAll('input[name=statut]').forEach(r => {
   });
 });
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    VALIDATION CODE ALARME (temps réel)
-   ════════════════════════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════════════ */
 function checkAlarme(v) {
-  /* Règle 1 : exactement 6 chiffres */
-  const isLen = /^\d{6}$/.test(v);
-  /* Règle 2 : minimum 4 chiffres distincts */
+  const isLen  = /^\d{6}$/.test(v);
   const isDiff = isLen && new Set(v.split('')).size >= 4;
-  /* Règle 3 : aucun doublon adjacent (XX) */
+  /* Règle doublon adjacent */
   let noDouble = true;
   for (let i = 0; i < v.length - 1; i++) {
     if (v[i] === v[i+1]) { noDouble = false; break; }
   }
-  /* Règle 4 : aucune séquence consécutive ascendante ou descendante de 3 */
+  /* Règle séquence consécutive ascendante ou descendante de 3 */
   let noConsec = true;
   for (let i = 0; i < v.length - 2; i++) {
     const a = +v[i], b = +v[i+1], c = +v[i+2];
     if ((b===a+1 && c===b+1) || (b===a-1 && c===b-1)) { noConsec = false; break; }
   }
-
-  /* Mise à jour des indicateurs visuels */
   const setRule = (id, ok) => {
     document.getElementById(id).classList.toggle('pass', ok);
     document.getElementById(id).classList.toggle('fail', !ok && v.length > 0);
@@ -783,7 +744,6 @@ function checkAlarme(v) {
   setRule('ar-diff',   isDiff);
   setRule('ar-double', isLen && noDouble);
   setRule('ar-consec', isLen && noConsec);
-
   return isLen && isDiff && noDouble && noConsec;
 }
 
@@ -795,24 +755,21 @@ document.getElementById('alarme').addEventListener('input', function () {
   else                            clearErr('alarme');
 });
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    VALIDATION PASSPHRASE (temps réel)
-   ════════════════════════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════════════ */
 function checkPass(v) {
-  /* Découpage sur les séparateurs non alphanumériques */
-  const words = v.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 0);
+  const words       = v.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 0);
   const enoughWords = words.length >= 4;
   const enoughLen   = words.every(w => w.length >= 4);
   const hasUpper    = words.every(w => /[A-Z]/.test(w));
   const hasSep      = words.length >= 2 && /[^a-zA-Z0-9]/.test(v);
 
-  /* Pilules par mot */
   document.getElementById('pass-pills').innerHTML = words.map(w => {
     const ok = w.length >= 4 && /[A-Z]/.test(w);
     return `<span class="${ok ? 'ok' : 'bad'}">${w}</span>`;
   }).join('');
 
-  /* Indicateurs visuels */
   const setRule = (id, ok) => {
     document.getElementById(id).classList.toggle('pass', ok);
     document.getElementById(id).classList.toggle('fail', !ok && v.length > 0);
@@ -821,7 +778,6 @@ function checkPass(v) {
   setRule('pr-len',   enoughLen && words.length > 0);
   setRule('pr-upper', hasUpper  && words.length > 0);
   setRule('pr-sep',   hasSep);
-
   return enoughWords && enoughLen && hasUpper && hasSep;
 }
 
@@ -832,30 +788,32 @@ document.getElementById('pass').addEventListener('input', function () {
   else { clearErr('pass'); document.getElementById('pass-pills').innerHTML = ''; }
 });
 
-/* ════════════════════════════════════════════════════════════════════════════
-   SOUMISSION : validation → chiffrement → envoi Formspree
-   ════════════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   SOUMISSION : validation → chiffrement AES-256 → envoi EmailJS
+   ══════════════════════════════════════════════════════════════════════ */
 async function submitForm() {
+
   /* ── 1. Validation côté client ── */
   let valid = true;
 
-  ['nom', 'prenom', 'adresse', 'localite'].forEach(id => {
+  ['nom','prenom','adresse','localite'].forEach(id => {
     if (!document.getElementById(id).value.trim()) { setErr(id); valid = false; }
     else setOk(id);
   });
 
-  if (!/^\d{4}$/.test(document.getElementById('cp').value.trim())) { setErr('cp'); valid = false; }
-  else setOk('cp');
+  if (!/^\d{4}$/.test(document.getElementById('cp').value.trim()))
+    { setErr('cp');    valid = false; } else setOk('cp');
 
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value.trim())) { setErr('email'); valid = false; }
-  else setOk('email');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value.trim()))
+    { setErr('email'); valid = false; } else setOk('email');
 
-  if (!/^(\+32|0032|0)[1-9]\d{7,8}$/.test(document.getElementById('gsm').value.replace(/\s/g, ''))) { setErr('gsm'); valid = false; }
-  else setOk('gsm');
+  if (!/^(\+32|0032|0)[1-9]\d{7,8}$/.test(document.getElementById('gsm').value.replace(/\s/g,'')))
+    { setErr('gsm');   valid = false; } else setOk('gsm');
 
-  if (!validateNISS())                             { setErr('niss');  valid = false; }
-  if (!document.getElementById('debut').value)     { setErr('debut'); valid = false; }
-  else setOk('debut');
+  if (!validateNISS()) { setErr('niss'); valid = false; }
+
+  if (!document.getElementById('debut').value)
+    { setErr('debut'); valid = false; } else setOk('debut');
 
   const statut = document.querySelector('input[name=statut]:checked');
   if (!statut) { document.getElementById('f-statut').classList.add('has-error'); valid = false; }
@@ -866,17 +824,19 @@ async function submitForm() {
     else setOk('maitre');
   }
 
-  if (!document.getElementById('bureau').value) { setErr('bureau'); valid = false; }
+  if (!document.getElementById('bureau').value)
+    { setErr('bureau'); valid = false; }
   else { clearErr('bureau'); document.getElementById('bureau').classList.remove('err'); }
 
-  if (!document.getElementById('dept').value) { setErr('dept'); valid = false; }
+  if (!document.getElementById('dept').value)
+    { setErr('dept'); valid = false; }
   else { clearErr('dept'); document.getElementById('dept').classList.remove('err'); }
 
-  if (!checkAlarme(document.getElementById('alarme').value)) { setErr('alarme'); valid = false; }
-  else setOk('alarme');
+  if (!checkAlarme(document.getElementById('alarme').value))
+    { setErr('alarme'); valid = false; } else setOk('alarme');
 
-  if (!checkPass(document.getElementById('pass').value)) { setErr('pass'); valid = false; }
-  else setOk('pass');
+  if (!checkPass(document.getElementById('pass').value))
+    { setErr('pass'); valid = false; } else setOk('pass');
 
   if (!valid) {
     const first = document.querySelector('.has-error');
@@ -884,12 +844,14 @@ async function submitForm() {
     return;
   }
 
-  /* ── 2. Chiffrement AES-256-GCM des champs sensibles avant envoi ── */
-  const btn   = document.getElementById('btn-submit');
-  const label = document.getElementById('btn-label');
-  btn.disabled = true;
-  btn.classList.add('loading');
-  label.textContent = 'Chiffrement en cours…';
+  /* ── 2. Chiffrement AES-256-GCM des champs sensibles ── */
+  const btn     = document.getElementById('btn-submit');
+  const label   = document.getElementById('btn-label');
+  const spinner = document.getElementById('btn-spinner');
+  btn.disabled  = true;
+  btn.classList.add('btn-loading');
+  spinner.style.display = 'inline-block';
+  label.textContent = 'Chiffrement…';
 
   let alarme_chiffre, pass_chiffree;
   try {
@@ -898,62 +860,61 @@ async function submitForm() {
   } catch (e) {
     alert('Erreur de chiffrement. Veuillez réessayer.');
     btn.disabled = false;
-    btn.classList.remove('loading');
+    btn.classList.remove('btn-loading');
+    spinner.style.display = 'none';
     label.textContent = 'Soumettre le formulaire';
     return;
   }
 
-  /* ── 3. Construction de la charge utile — champs sensibles en ciphertext ── */
-  const payload = {
-    nom:             document.getElementById('nom').value.trim(),
-    prenom:          document.getElementById('prenom').value.trim(),
-    adresse:         document.getElementById('adresse').value.trim(),
-    cp:              document.getElementById('cp').value.trim(),
-    localite:        document.getElementById('localite').value.trim(),
-    email_prive:     document.getElementById('email').value.trim(),
-    gsm:             document.getElementById('gsm').value.trim(),
-    niss:            document.getElementById('niss').value.trim(),
-    date_debut:      document.getElementById('debut').value,
-    statut:          statut.value,
-    maitre_stage:    document.getElementById('maitre').value.trim() || '—',
-    numero_ipi:      document.getElementById('ipi').value.trim()         || '—',
-    numero_entreprise: document.getElementById('nentreprise').value.trim() || '—',
-    societe:         document.getElementById('societe').value.trim()     || '—',
-    bureau:          document.getElementById('bureau').value,
-    departement:     document.getElementById('dept').value,
+  /* ── 3. Construction des paramètres du template EmailJS ── */
+  label.textContent = 'Envoi…';
+  const params = {
+    /* Identité */
+    nom:                document.getElementById('nom').value.trim(),
+    prenom:             document.getElementById('prenom').value.trim(),
+    adresse:            document.getElementById('adresse').value.trim(),
+    cp:                 document.getElementById('cp').value.trim(),
+    localite:           document.getElementById('localite').value.trim(),
+    email_prive:        document.getElementById('email').value.trim(),
+    gsm:                document.getElementById('gsm').value.trim(),
+    niss:               document.getElementById('niss').value.trim(),
+    date_debut:         document.getElementById('debut').value,
+    /* Statut */
+    statut:             statut.value,
+    maitre_stage:       document.getElementById('maitre').value.trim() || '—',
+    numero_ipi:         document.getElementById('ipi').value.trim()         || '—',
+    numero_entreprise:  document.getElementById('nentreprise').value.trim() || '—',
+    societe:            document.getElementById('societe').value.trim()     || '—',
+    /* Affectation */
+    bureau:             document.getElementById('bureau').value,
+    departement:        document.getElementById('dept').value,
     /* Champs sensibles — chiffrés AES-256-GCM — illisibles sans la clé */
-    code_alarme_AES256:  alarme_chiffre,
-    passphrase_AES256:   pass_chiffree
+    code_alarme_AES256: alarme_chiffre,
+    passphrase_AES256:  pass_chiffree
   };
 
-  /* ── 4. Envoi vers Formspree ── */
-  label.textContent = 'Envoi en cours…';
+  /* ── 4. Envoi via EmailJS ── */
   try {
-    const resp = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body:    JSON.stringify(payload)
-    });
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
 
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-
-    /* Succès : affichage de l'écran de confirmation */
+    /* Succès */
     document.getElementById('form-body').style.display = 'none';
     const sc = document.getElementById('success-screen');
     sc.style.display = 'flex';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch (e) {
-    alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou contacter le service IT.');
+    alert('Erreur lors de l\'envoi. Veuillez réessayer ou contacter le service IT.\n\nDétail : ' + JSON.stringify(e));
     btn.disabled = false;
-    btn.classList.remove('loading');
+    btn.classList.remove('btn-loading');
+    spinner.style.display = 'none';
     label.textContent = 'Soumettre le formulaire';
   }
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    RÉINITIALISATION
-   ════════════════════════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════════════ */
 function resetForm() {
   document.querySelectorAll('input, select').forEach(el => {
     if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
