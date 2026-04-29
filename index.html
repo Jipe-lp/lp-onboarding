@@ -307,6 +307,62 @@ body {
 .lp-footer p { font-size: 11px; color: rgba(255,255,255,.4); }
 .lp-footer span { color: var(--lp-red); margin: 0 6px; }
 
+/* ── Bannière quadrigramme ──────────────────────────────────────── */
+.quadri-banner {
+  background: var(--lp-white);
+  border: 1px solid var(--lp-border);
+  border-left: 4px solid var(--lp-red);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow);
+}
+.quadri-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--lp-red-lt);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+}
+.quadri-info { flex: 1; }
+.quadri-info small {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--lp-muted); display: block;
+}
+.quadri-info strong {
+  font-size: 18px; font-weight: 700; color: var(--lp-black);
+  font-family: 'Courier New', monospace; letter-spacing: 3px;
+}
+.quadri-note {
+  font-size: 11px; color: var(--lp-muted); margin-top: 2px; display: block;
+}
+
+/* ── Écran lien invalide ────────────────────────────────────────── */
+.invalid-screen {
+  display: none;
+  min-height: 60vh;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+}
+.invalid-card {
+  background: var(--lp-white);
+  border: 1px solid var(--lp-border);
+  border-top: 4px solid var(--lp-red);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  max-width: 480px; width: 100%;
+}
+.invalid-card h2 {
+  font-family: var(--ff-serif); font-size: 24px; font-weight: 400;
+  color: var(--lp-black); margin: 16px 0 10px;
+}
+.invalid-card p { font-size: 14px; color: var(--lp-muted); line-height: 1.7; }
+
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 620px) {
   .cols2, .cols3 { grid-template-columns: 1fr; }
@@ -355,9 +411,37 @@ body {
   <p>Ce formulaire permet au service IT de préparer votre accès informatique, votre badge et vos outils de travail avant votre premier jour.</p>
 </div>
 
+<!-- ── Écran lien invalide (affiché si ?q= absent ou malformé) ──────────── -->
+<div class="invalid-screen" id="invalid-screen">
+  <div class="invalid-card">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="19" stroke="#e0e0e0" stroke-width="1.5"/>
+      <path d="M20 12v10M20 28h.01" stroke="#c8372d" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <h2>Lien invalide</h2>
+    <p>Ce lien ne contient pas de quadrigramme utilisateur valide.<br>
+    Veuillez contacter le service IT de Latour &amp; Petit pour obtenir votre lien personnel.</p>
+  </div>
+</div>
+
 <!-- ── Formulaire ────────────────────────────────────────────────────── -->
 <main class="lp-main">
 <div id="form-body">
+
+  <!-- Bannière quadrigramme (remplie dynamiquement par JS) -->
+  <div class="quadri-banner" id="quadri-banner">
+    <div class="quadri-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <rect x="1" y="1" width="16" height="16" rx="2" stroke="#c8372d" stroke-width="1.5"/>
+        <path d="M5 9h8M9 5v8" stroke="#c8372d" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="quadri-info">
+      <small>Identifiant utilisateur</small>
+      <strong id="quadri-display">——</strong>
+      <span class="quadri-note">Ce formulaire est personnel et nominatif — ne le transmettez pas à un tiers.</span>
+    </div>
+  </div>
 
   <!-- Section 1 : Identité -->
   <div class="lp-card">
@@ -553,6 +637,7 @@ body {
             <li id="pr-len">Chaque mot ≥ 4 caractères alphanumériques</li>
             <li id="pr-upper">Chaque mot contient au moins une majuscule</li>
             <li id="pr-sep">Mots séparés par un caractère spécial</li>
+            <li id="pr-forbidden">Aucun mot interdit (quadrigramme, nom, prénom, société, latour, petit, l&amp;p)</li>
           </ul>
         </div>
         <span class="err-msg">⚠ La passphrase ne respecte pas toutes les règles.</span>
@@ -599,19 +684,431 @@ body {
 
 /* ┌─────────────────────────────────────────────────────────────────────┐
    │  CONFIGURATION EMAILJS — remplacer les 3 valeurs ci-dessous        │
-   │  après création du compte sur https://emailjs.com                  │
    └─────────────────────────────────────────────────────────────────────┘ */
-const EMAILJS_PUBLIC_KEY  = 'Ulk9zFvyDPMD_Hyk4';   // Account → API Keys
-const EMAILJS_SERVICE_ID  = 'service_1ztc86x';  // Email Services → Service ID
-const EMAILJS_TEMPLATE_ID = 'template_vr3qbsq'; // Email Templates → Template ID
+const EMAILJS_PUBLIC_KEY  = 'REMPLACER_PAR_TA_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'REMPLACER_PAR_TON_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'REMPLACER_PAR_TON_TEMPLATE_ID';
 
 /* ┌─────────────────────────────────────────────────────────────────────┐
    │  CLÉ AES-256 — NE PAS MODIFIER — identique au déchiffreur          │
    └─────────────────────────────────────────────────────────────────────┘ */
 const AES_KEY_HEX = 'e58b41152d5a2cd107033d3a23ac25f48c3e7dd6432f1f98f222ea21fca3347e';
 
-/* Initialisation EmailJS avec la Public Key */
+/* ══════════════════════════════════════════════════════════════════════
+   LECTURE DU QUADRIGRAMME DANS L'URL (?q=XXXX)
+   ══════════════════════════════════════════════════════════════════════
+   Le lien envoyé à l'utilisateur est de la forme :
+   https://toncompte.github.io/lp-onboarding/?q=DUPJ
+   Le quadrigramme doit comporter exactement 4 lettres (A-Z).          */
+const QUADRIGRAMME = (() => {
+  const params = new URLSearchParams(window.location.search);
+  const q      = (params.get('q') || '').trim().toUpperCase();
+  return /^[A-Z]{4}$/.test(q) ? q : null;
+})();
+
+/* Affichage / masquage selon présence du quadrigramme */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!QUADRIGRAMME) {
+    /* Lien invalide → masquer le formulaire, afficher l'écran d'erreur */
+    document.getElementById('form-body').style.display    = 'none';
+    document.getElementById('invalid-screen').style.display = 'flex';
+    return;
+  }
+  /* Injection du quadrigramme dans la bannière */
+  document.getElementById('quadri-display').textContent = QUADRIGRAMME;
+
+  /* Personnalisation du Hero avec le quadrigramme */
+  const hero = document.querySelector('.lp-hero p');
+  if (hero) hero.innerHTML =
+    `Ce formulaire est destiné à <strong>${QUADRIGRAMME}</strong>. ` +
+    `Il permet au service IT de préparer votre accès informatique, votre badge et vos outils avant votre premier jour.`;
+});
+
+/* Initialisation EmailJS */
 emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* ══════════════════════════════════════════════════════════════════════
+   CHIFFREMENT AES-256-GCM (Web Crypto API natif)
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Conversion hex → ArrayBuffer */
+function hexToBuffer(hex) {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  }
+  return bytes.buffer;
+}
+
+/* Chiffrement AES-256-GCM : retourne IV(12B) + ciphertext encodé Base64 */
+async function aesEncrypt(plaintext) {
+  const key = await crypto.subtle.importKey(
+    'raw', hexToBuffer(AES_KEY_HEX),
+    { name: 'AES-GCM' }, false, ['encrypt']
+  );
+  const iv        = crypto.getRandomValues(new Uint8Array(12));
+  const encoded   = new TextEncoder().encode(plaintext);
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+  const combined  = new Uint8Array(iv.byteLength + encrypted.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(encrypted), iv.byteLength);
+  return btoa(String.fromCharCode(...combined));
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   HELPERS VISUELS
+   ══════════════════════════════════════════════════════════════════════ */
+
+function clearErr(id) {
+  const f  = document.getElementById('f-' + id);
+  const el = document.getElementById(id);
+  if (f)  f.classList.remove('has-error');
+  if (el) el.classList.remove('err', 'ok');
+}
+
+function setErr(id) {
+  const f  = document.getElementById('f-' + id);
+  const el = document.getElementById(id);
+  if (f)  f.classList.add('has-error');
+  if (el) { el.classList.add('err'); el.classList.remove('ok'); }
+}
+
+function setOk(id) {
+  clearErr(id);
+  const el = document.getElementById(id);
+  if (el) el.classList.add('ok');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   FORMATAGE AUTOMATIQUE
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* NISS : formatage progressif AA.MM.JJ-XXX.CC */
+document.getElementById('niss').addEventListener('input', function () {
+  let v = this.value.replace(/\D/g, '').substring(0, 11);
+  let out = '';
+  if      (v.length > 9) out = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,6)+'-'+v.slice(6,9)+'.'+v.slice(9);
+  else if (v.length > 6) out = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,6)+'-'+v.slice(6);
+  else if (v.length > 4) out = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4);
+  else if (v.length > 2) out = v.slice(0,2)+'.'+v.slice(2);
+  else                   out = v;
+  this.value = out;
+  validateNISS();
+});
+
+function validateNISS() {
+  const digits = document.getElementById('niss').value.replace(/\D/g, '');
+  if (digits.length === 11) { setOk('niss'); return true; }
+  if (digits.length > 0)    setErr('niss');
+  else                      clearErr('niss');
+  return false;
+}
+
+/* N° entreprise : BE XXXX.XXX.XXX à la perte du focus */
+document.getElementById('nentreprise').addEventListener('blur', function () {
+  const raw = this.value.replace(/[^\d]/g, '');
+  if (raw.length === 10) {
+    this.value = 'BE ' + raw.slice(0,4) + '.' + raw.slice(4,7) + '.' + raw.slice(7);
+    clearErr('nentreprise');
+  } else if (raw.length > 0) {
+    setErr('nentreprise');
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATUT : affichage conditionnel maître de stage
+   ══════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('input[name=statut]').forEach(r => {
+  r.addEventListener('change', function () {
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    this.closest('.radio-item').classList.add('selected');
+    const isStage = this.value.startsWith('Stagiaire');
+    document.getElementById('cond-stage').classList.toggle('visible', isStage);
+    document.getElementById('f-statut').classList.remove('has-error');
+    if (!isStage) clearErr('maitre');
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   VALIDATION CODE ALARME (temps réel)
+   ══════════════════════════════════════════════════════════════════════ */
+function checkAlarme(v) {
+  const isLen  = /^\d{6}$/.test(v);
+  const isDiff = isLen && new Set(v.split('')).size >= 4;
+  /* Règle doublon adjacent */
+  let noDouble = true;
+  for (let i = 0; i < v.length - 1; i++) {
+    if (v[i] === v[i+1]) { noDouble = false; break; }
+  }
+  /* Règle séquence consécutive ascendante ou descendante de 3 */
+  let noConsec = true;
+  for (let i = 0; i < v.length - 2; i++) {
+    const a = +v[i], b = +v[i+1], c = +v[i+2];
+    if ((b===a+1 && c===b+1) || (b===a-1 && c===b-1)) { noConsec = false; break; }
+  }
+  const setRule = (id, ok) => {
+    document.getElementById(id).classList.toggle('pass', ok);
+    document.getElementById(id).classList.toggle('fail', !ok && v.length > 0);
+  };
+  setRule('ar-len',    isLen);
+  setRule('ar-diff',   isDiff);
+  setRule('ar-double', isLen && noDouble);
+  setRule('ar-consec', isLen && noConsec);
+  return isLen && isDiff && noDouble && noConsec;
+}
+
+document.getElementById('alarme').addEventListener('input', function () {
+  this.value = this.value.replace(/\D/g, '');
+  const ok = checkAlarme(this.value);
+  if (ok)                        setOk('alarme');
+  else if (this.value.length > 0) setErr('alarme');
+  else                            clearErr('alarme');
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   CONSTRUCTION DE LA LISTE DES MOTS INTERDITS DANS LA PASSPHRASE
+   Sources : quadrigramme + nom + prénom + société + termes L&P fixes.
+   La comparaison est insensible à la casse et aux accents.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Normalisation : minuscules + suppression des diacritiques */
+function normalize(s) {
+  return s.toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')  /* retire les accents */
+          .replace(/[^a-z0-9]/g, '');       /* garde uniquement alphanum */
+}
+
+/* Liste statique des termes toujours interdits */
+const FORBIDDEN_STATIC = ['latour', 'petit', 'lp', 'l&p', 'land', 'pet'];
+
+/* Construit la liste complète des tokens interdits à partir des champs du formulaire */
+function buildForbiddenList() {
+  const tokens = [
+    QUADRIGRAMME || '',
+    document.getElementById('nom').value,
+    document.getElementById('prenom').value,
+    document.getElementById('societe').value,
+    ...FORBIDDEN_STATIC
+  ];
+
+  /* Pour chaque token : on découpe aussi par espace/tiret et on ajoute chaque partie */
+  const result = new Set();
+  tokens.forEach(t => {
+    const parts = t.split(/[\s\-_]+/);
+    parts.forEach(p => {
+      const n = normalize(p);
+      if (n.length >= 2) result.add(n); /* ignorer les tokens < 2 caractères */
+    });
+  });
+  return result;
+}
+
+/* Vérifie si un mot de la passphrase contient un token interdit (sous-chaîne) */
+function wordContainsForbidden(word, forbiddenSet) {
+  const wn = normalize(word);
+  for (const token of forbiddenSet) {
+    if (wn.includes(token)) return token; /* retourne le token fautif */
+  }
+  return null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   VALIDATION PASSPHRASE (temps réel)
+   ══════════════════════════════════════════════════════════════════════ */
+function checkPass(v) {
+  const words       = v.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 0);
+  const enoughWords = words.length >= 4;
+  const enoughLen   = words.every(w => w.length >= 4);
+  const hasUpper    = words.every(w => /[A-Z]/.test(w));
+  const hasSep      = words.length >= 2 && /[^a-zA-Z0-9]/.test(v);
+
+  /* Vérification des mots interdits */
+  const forbidden   = buildForbiddenList();
+  const noForbidden = words.every(w => wordContainsForbidden(w, forbidden) === null);
+
+  /* Pilules par mot — rouge si trop court, ou majuscule absente, ou mot interdit */
+  document.getElementById('pass-pills').innerHTML = words.map(w => {
+    const isForbidden = wordContainsForbidden(w, forbidden) !== null;
+    const isOk        = w.length >= 4 && /[A-Z]/.test(w) && !isForbidden;
+    return `<span class="${isOk ? 'ok' : 'bad'}" title="${isForbidden ? 'Mot interdit' : ''}">${w}${isForbidden ? ' ✗' : ''}</span>`;
+  }).join('');
+
+  /* Indicateurs visuels des règles */
+  const setRule = (id, ok) => {
+    document.getElementById(id).classList.toggle('pass', ok);
+    document.getElementById(id).classList.toggle('fail', !ok && v.length > 0);
+  };
+  setRule('pr-words',    enoughWords);
+  setRule('pr-len',      enoughLen   && words.length > 0);
+  setRule('pr-upper',    hasUpper    && words.length > 0);
+  setRule('pr-sep',      hasSep);
+  setRule('pr-forbidden', noForbidden && words.length > 0);
+
+  return enoughWords && enoughLen && hasUpper && hasSep && noForbidden;
+}
+
+document.getElementById('pass').addEventListener('input', function () {
+  const ok = checkPass(this.value);
+  if (ok)                        setOk('pass');
+  else if (this.value.length > 0) setErr('pass');
+  else { clearErr('pass'); document.getElementById('pass-pills').innerHTML = ''; }
+});
+
+/* Recalcul de la passphrase quand nom/prénom/société changent
+   (les mots interdits dépendent de ces champs)                        */
+['nom', 'prenom', 'societe'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const passVal = document.getElementById('pass').value;
+    if (passVal.length > 0) {
+      const ok = checkPass(passVal);
+      if (ok) setOk('pass'); else setErr('pass');
+    }
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   SOUMISSION : validation → chiffrement AES-256 → envoi EmailJS
+   ══════════════════════════════════════════════════════════════════════ */
+async function submitForm() {
+
+  /* ── 1. Validation côté client ── */
+  let valid = true;
+
+  ['nom','prenom','adresse','localite'].forEach(id => {
+    if (!document.getElementById(id).value.trim()) { setErr(id); valid = false; }
+    else setOk(id);
+  });
+
+  if (!/^\d{4}$/.test(document.getElementById('cp').value.trim()))
+    { setErr('cp');    valid = false; } else setOk('cp');
+
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value.trim()))
+    { setErr('email'); valid = false; } else setOk('email');
+
+  if (!/^(\+32|0032|0)[1-9]\d{7,8}$/.test(document.getElementById('gsm').value.replace(/\s/g,'')))
+    { setErr('gsm');   valid = false; } else setOk('gsm');
+
+  if (!validateNISS()) { setErr('niss'); valid = false; }
+
+  if (!document.getElementById('debut').value)
+    { setErr('debut'); valid = false; } else setOk('debut');
+
+  const statut = document.querySelector('input[name=statut]:checked');
+  if (!statut) { document.getElementById('f-statut').classList.add('has-error'); valid = false; }
+  else           document.getElementById('f-statut').classList.remove('has-error');
+
+  if (statut && statut.value.startsWith('Stagiaire')) {
+    if (!document.getElementById('maitre').value.trim()) { setErr('maitre'); valid = false; }
+    else setOk('maitre');
+  }
+
+  if (!document.getElementById('bureau').value)
+    { setErr('bureau'); valid = false; }
+  else { clearErr('bureau'); document.getElementById('bureau').classList.remove('err'); }
+
+  if (!document.getElementById('dept').value)
+    { setErr('dept'); valid = false; }
+  else { clearErr('dept'); document.getElementById('dept').classList.remove('err'); }
+
+  if (!checkAlarme(document.getElementById('alarme').value))
+    { setErr('alarme'); valid = false; } else setOk('alarme');
+
+  if (!checkPass(document.getElementById('pass').value))
+    { setErr('pass'); valid = false; } else setOk('pass');
+
+  if (!valid) {
+    const first = document.querySelector('.has-error');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  /* ── 2. Chiffrement AES-256-GCM des champs sensibles ── */
+  const btn     = document.getElementById('btn-submit');
+  const label   = document.getElementById('btn-label');
+  const spinner = document.getElementById('btn-spinner');
+  btn.disabled  = true;
+  btn.classList.add('btn-loading');
+  spinner.style.display = 'inline-block';
+  label.textContent = 'Chiffrement…';
+
+  let alarme_chiffre, pass_chiffree;
+  try {
+    alarme_chiffre = await aesEncrypt(document.getElementById('alarme').value);
+    pass_chiffree  = await aesEncrypt(document.getElementById('pass').value);
+  } catch (e) {
+    alert('Erreur de chiffrement. Veuillez réessayer.');
+    btn.disabled = false;
+    btn.classList.remove('btn-loading');
+    spinner.style.display = 'none';
+    label.textContent = 'Soumettre le formulaire';
+    return;
+  }
+
+  /* ── 3. Construction des paramètres du template EmailJS ── */
+  label.textContent = 'Envoi…';
+  const params = {
+    /* Identification */
+    quadrigramme:       QUADRIGRAMME,
+    /* Identité */
+    nom:                document.getElementById('nom').value.trim(),
+    prenom:             document.getElementById('prenom').value.trim(),
+    adresse:            document.getElementById('adresse').value.trim(),
+    cp:                 document.getElementById('cp').value.trim(),
+    localite:           document.getElementById('localite').value.trim(),
+    email_prive:        document.getElementById('email').value.trim(),
+    gsm:                document.getElementById('gsm').value.trim(),
+    niss:               document.getElementById('niss').value.trim(),
+    date_debut:         document.getElementById('debut').value,
+    /* Statut */
+    statut:             statut.value,
+    maitre_stage:       document.getElementById('maitre').value.trim() || '—',
+    numero_ipi:         document.getElementById('ipi').value.trim()         || '—',
+    numero_entreprise:  document.getElementById('nentreprise').value.trim() || '—',
+    societe:            document.getElementById('societe').value.trim()     || '—',
+    /* Affectation */
+    bureau:             document.getElementById('bureau').value,
+    departement:        document.getElementById('dept').value,
+    /* Champs sensibles — chiffrés AES-256-GCM */
+    code_alarme_AES256: alarme_chiffre,
+    passphrase_AES256:  pass_chiffree
+  };
+
+  /* ── 4. Envoi via EmailJS ── */
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+
+    document.getElementById('form-body').style.display = 'none';
+    const sc = document.getElementById('success-screen');
+    sc.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (e) {
+    alert('Erreur lors de l\'envoi. Veuillez réessayer ou contacter le service IT.\n\nDétail : ' + JSON.stringify(e));
+    btn.disabled = false;
+    btn.classList.remove('btn-loading');
+    spinner.style.display = 'none';
+    label.textContent = 'Soumettre le formulaire';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   RÉINITIALISATION
+   ══════════════════════════════════════════════════════════════════════ */
+function resetForm() {
+  document.querySelectorAll('input, select').forEach(el => {
+    if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+    else el.value = '';
+    el.classList.remove('ok', 'err');
+  });
+  document.querySelectorAll('.field').forEach(f  => f.classList.remove('has-error'));
+  document.querySelectorAll('.radio-item').forEach(r => r.classList.remove('selected'));
+  document.getElementById('cond-stage').classList.remove('visible');
+  document.getElementById('pass-pills').innerHTML = '';
+  document.querySelectorAll('.rules-box li').forEach(li => li.classList.remove('pass', 'fail'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 
 /* ══════════════════════════════════════════════════════════════════════
    CHIFFREMENT AES-256-GCM (Web Crypto API — natif dans tous navigateurs)
