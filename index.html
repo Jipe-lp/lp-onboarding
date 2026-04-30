@@ -715,9 +715,9 @@ body {
 /* ┌─────────────────────────────────────────────────────────────────────┐
    │  CONFIGURATION EMAILJS — remplacer les 3 valeurs ci-dessous        │
    └─────────────────────────────────────────────────────────────────────┘ */
-const EMAILJS_PUBLIC_KEY  = 'REMPLACER_PAR_TA_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID  = 'REMPLACER_PAR_TON_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'REMPLACER_PAR_TON_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY  = 'Ulk9zFvyDPMD_Hyk4';
+const EMAILJS_SERVICE_ID  = 'service_1ztc86x';
+const EMAILJS_TEMPLATE_ID = 'template_vr3qbsq';
 
 /* ┌─────────────────────────────────────────────────────────────────────┐
    │  CLÉ AES-256 — NE PAS MODIFIER — identique au déchiffreur          │
@@ -827,7 +827,7 @@ function generatePass() {
 let currentSuggestion = '';
 
 /* Génère, valide et affiche une nouvelle suggestion */
-function generateAndShowPass() {
+/* function generateAndShowPass() {
   if (PASS_WORDS.length === 0) return;
   let candidate = '';
   for (let i = 0; i < 20; i++) {
@@ -837,7 +837,8 @@ function generateAndShowPass() {
   currentSuggestion = candidate;
   document.getElementById('pass-suggest-value').textContent = candidate;
 }
-
+*/
+  
 /* Applique la suggestion dans le champ avec feedback visuel */
 function useSuggestedPass() {
   const input = document.getElementById('pass');
